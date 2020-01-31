@@ -12,7 +12,7 @@ class HomeController extends Controller
 {
     public function home():array
     {
-        $minutes = 5;
+        $minutes = 15;
         $now = Carbon::now();
         $yesterday = Carbon::now('UTC')->subDay();
 
@@ -36,11 +36,12 @@ class HomeController extends Controller
             return DB::table('downloads')->where('id', \DB::table('downloads')->max('id'))->first();
         });
 
+
         $downloads = $last->downloads - $first->downloads;
 //        dd($downloads);
         return [
             'status' => 'ok',
-            'msg' => 'nothing to see here',
+            'box' => 'laravel/homestead',
             'last_24_hours' => $max - $min,
             'since_'.str_replace(' ', '_', $first->created_at) => $downloads,
         ];
