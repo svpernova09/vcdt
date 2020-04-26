@@ -18,7 +18,7 @@ class ProcessBoxes
 
             Download::create([
                 'box_id' => $box->id,
-                'downloads' => $stats[$box->id]['downloads'],
+                'downloads' => $stats[$box->id]['downloads'] ?? 0,
             ]);
         }
     }
