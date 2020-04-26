@@ -18,29 +18,29 @@ class HomeController extends Controller
         $yesterday = Carbon::now('UTC')->subDay();
         $results = [];
         foreach (Box::all() as $box) {
-            $max = Cache::remember($box->id . '_max', $minutes, function () use ($now, $yesterday)
+            $max = Cache::remember($box->id.'_max', $minutes, function () use ($now, $yesterday)
             {
                 return DB::table('downloads')->whereBetween('created_at', [$yesterday, $now])->max('downloads');
             });
 
-            $min = Cache::remember($box->id . '_min', $minutes, function () use ($now, $yesterday)
+            $min = Cache::remember($box->id.'_min', $minutes, function () use ($now, $yesterday)
             {
                 return DB::table('downloads')->whereBetween('created_at', [$yesterday, $now])->min('downloads');
             });
 
-            $first = Cache::remember($box->id . '_first', $minutes, function ()
+            $first = Cache::remember($box->id.'_first', $minutes, function ()
             {
                 return DB::table('downloads')->where('id', '=', 1)->first();
             });
 
-            $last = Cache::remember($box->id . '_last', $minutes, function ()
+            $last = Cache::remember($box->id.'_last', $minutes, function ()
             {
                 return DB::table('downloads')->where('id', \DB::table('downloads')->max('id'))->first();
             });
             $downloads = $last->downloads - $first->downloads;
             $results[] = [
                 'status' => 'ok',
-                'box' => $box->name,
+                'box' => $box->username.'/'.$box->name,
                 'last_24_hours' => $max - $min,
                 'since_'.str_replace(' ', '_', $first->created_at) => $downloads,
             ];
