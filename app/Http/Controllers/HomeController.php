@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Box;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
