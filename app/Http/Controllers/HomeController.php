@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Box;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -16,36 +15,35 @@ class HomeController extends Controller
         $minutes = 15;
         $now = Carbon::now();
         $yesterday = Carbon::now('UTC')->subDay();
-        $results = [];
-        foreach (Box::all() as $box) {
-            $max = Cache::remember('max_'.$box->id, $minutes, function () use ($now, $yesterday)
-            {
-                return DB::table('downloads')->whereBetween('created_at', [$yesterday, $now])->max('downloads');
-            });
 
-            $min = Cache::remember('min_'.$$box->id, $minutes, function () use ($now, $yesterday)
-            {
-                return DB::table('downloads')->whereBetween('created_at', [$yesterday, $now])->min('downloads');
-            });
+        $max = Cache::remember('max', $minutes, function () use ($now, $yesterday) {
+            return DB::table('downloads')
+                     ->whereBetween('created_at', [$yesterday, $now])
+                     ->max('downloads');
+        });
 
-            $first = Cache::remember('first_'.$box->id, $minutes, function ()
-            {
-                return DB::table('downloads')->where('id', '=', 1)->first();
-            });
+        $min = Cache::remember('min', $minutes, function () use ($now, $yesterday) {
+            return DB::table('downloads')
+                     ->whereBetween('created_at', [$yesterday, $now])
+                     ->min('downloads');
+        });
 
-            $last = Cache::remember('last_'.$box->id, $minutes, function ()
-            {
-                return DB::table('downloads')->where('id', \DB::table('downloads')->max('id'))->first();
-            });
-            $downloads = $last->downloads - $first->downloads;
-            $results[] = [
-                'status' => 'ok',
-                'box' => $box->username.'/'.$box->name,
-                'last_24_hours' => $max - $min,
-                'since_'.str_replace(' ', '_', $first->created_at) => $downloads,
-            ];
-        }
+        $first = Cache::remember('first', $minutes, function () {
+            return DB::table('downloads')->where('id', '=', 1)->first();
+        });
 
-        return $results;
+        $last = Cache::remember('last', $minutes, function () {
+            return DB::table('downloads')->where('id', \DB::table('downloads')->max('id'))->first();
+        });
+
+
+        $downloads = $last->downloads - $first->downloads;
+//        dd($downloads);
+        return [
+            'status' => 'ok',
+            'box' => 'laravel/homestead',
+            'last_24_hours' => $max - $min,
+            'since_'.str_replace(' ', '_', $first->created_at) => $downloads,
+        ];
     }
 }
