@@ -18,22 +18,22 @@ class HomeController extends Controller
         $yesterday = Carbon::now('UTC')->subDay();
         $results = [];
         foreach (Box::all() as $box) {
-            $max = Cache::remember($box->id.'_max', $minutes, function () use ($now, $yesterday)
+            $max = Cache::remember('max_'.$box->id, $minutes, function () use ($now, $yesterday)
             {
                 return DB::table('downloads')->whereBetween('created_at', [$yesterday, $now])->max('downloads');
             });
 
-            $min = Cache::remember($box->id.'_min', $minutes, function () use ($now, $yesterday)
+            $min = Cache::remember('min_'.$$box->id, $minutes, function () use ($now, $yesterday)
             {
                 return DB::table('downloads')->whereBetween('created_at', [$yesterday, $now])->min('downloads');
             });
 
-            $first = Cache::remember($box->id.'_first', $minutes, function ()
+            $first = Cache::remember('first_'.$box->id, $minutes, function ()
             {
                 return DB::table('downloads')->where('id', '=', 1)->first();
             });
 
-            $last = Cache::remember($box->id.'_last', $minutes, function ()
+            $last = Cache::remember('last_'.$box->id, $minutes, function ()
             {
                 return DB::table('downloads')->where('id', \DB::table('downloads')->max('id'))->first();
             });
