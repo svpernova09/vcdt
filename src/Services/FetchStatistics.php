@@ -22,7 +22,7 @@ class FetchStatistics
         ];
         $client = new Client([
             'base_uri' => 'https://app.vagrantup.com/api/v1/box/',
-            'timeout' => 2.0,
+            'timeout' => 10.0,
         ]);
 
         try {
@@ -35,6 +35,7 @@ class FetchStatistics
         catch (\Exception $e) {
             Log::error($e->getMessage());
             Log::error($e);
+            Log::error($this->box);
         }
     }
 }
