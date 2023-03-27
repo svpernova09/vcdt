@@ -21,11 +21,6 @@ class FetchStats extends Command
      */
     protected $description = 'Fetch Stats';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         parent::__construct();
@@ -33,10 +28,8 @@ class FetchStats extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $run = new ProcessBoxes();
         $run();

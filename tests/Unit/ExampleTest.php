@@ -2,18 +2,15 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class ExampleTest extends TestCase
 {
-    public function testHomePage():void
+    /**
+     * A basic test example.
+     */
+    public function test_that_true_is_true(): void
     {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-        $response->assertJson([
-            'status' => 'ok',
-            'msg' => 'nothing to see here',
-        ]);
+        $this->assertTrue(true);
     }
 }

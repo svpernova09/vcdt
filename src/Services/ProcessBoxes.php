@@ -2,8 +2,8 @@
 
 namespace VCDT\Services;
 
-use App\Box;
-use App\Download;
+use App\Models\Box;
+use App\Models\Download;
 
 class ProcessBoxes
 {
