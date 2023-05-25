@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Download;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $years =['2023','2022', '2021', '2020', '2019'];
+
+    foreach ($years as $year) {
+        $downloads = Download::where('box_id', 1)->where('created_at', 'LIKE', $year . '%')->get();
+        if($downloads->count() > 0 ) {
+            $start = $downloads->first()->downloads;
+            $end = $downloads->last()->downloads;
+            //        var_dump($start, $end, $end - $start);
+            print("For year $year, the total downloads are " . number_format($end - $start) . "<br>");
+        }
+    }
 });
