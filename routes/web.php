@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $years =['2023','2022', '2021', '2020', '2019'];
+    $years =['2024', '2023','2022', '2021', '2020', '2019'];
 
     foreach ($years as $year) {
         $downloads = Download::where('box_id', 1)->where('created_at', 'LIKE', $year . '%')->get();
