@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Box;
 use App\Models\Download;
 use Illuminate\Support\Facades\Route;
 
@@ -15,39 +16,48 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $years = ['2025', '2024', '2023', '2022', '2021', '2020', '2019'];
+    $boxConfigs = [
+        ['id' => 1, 'years' => ['2025', '2024', '2023', '2022', '2021', '2020', '2019']],
+        ['id' => 5, 'years' => ['2025', '2024']],
+    ];
 
-    foreach ($years as $year) {
-        $first = Download::where('box_id', 1)
-            ->whereYear('created_at', $year)
-            ->orderBy('created_at')
-            ->first();
+    $boxes = [];
 
-        $last = Download::where('box_id', 1)
-            ->whereYear('created_at', $year)
-            ->orderByDesc('created_at')
-            ->first();
+    foreach ($boxConfigs as $config) {
+        $box = Box::find($config['id']);
 
-        if ($first && $last) {
-            echo "For year $year, the total downloads are ".number_format($last->downloads - $first->downloads).'<br>';
+        if (! $box) {
+            continue;
         }
+
+        $stats = [];
+
+        foreach ($config['years'] as $year) {
+            $first = Download::where('box_id', $config['id'])
+                ->whereYear('created_at', $year)
+                ->orderBy('created_at')
+                ->first();
+
+            $last = Download::where('box_id', $config['id'])
+                ->whereYear('created_at', $year)
+                ->orderByDesc('created_at')
+                ->first();
+
+            if ($first && $last) {
+                $stats[] = [
+                    'year' => $year,
+                    'downloads' => $last->downloads - $first->downloads,
+                ];
+            }
+        }
+
+        $boxes[] = [
+            'name' => $box->username.'/'.$box->name,
+            'username' => $box->username,
+            'boxname' => $box->name,
+            'stats' => $stats,
+        ];
     }
 
-    $years = ['2025', '2024'];
-
-    foreach ($years as $year) {
-        $first = Download::where('box_id', 5)
-            ->whereYear('created_at', $year)
-            ->orderBy('created_at')
-            ->first();
-
-        $last = Download::where('box_id', 5)
-            ->whereYear('created_at', $year)
-            ->orderByDesc('created_at')
-            ->first();
-
-        if ($first && $last) {
-            echo "For year $year, the total downloads are ".number_format($last->downloads - $first->downloads).'<br>';
-        }
-    }
+    return view('stats', ['boxes' => $boxes]);
 });
