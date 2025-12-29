@@ -127,6 +127,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | HCP Vagrant Registry Credentials
+    |--------------------------------------------------------------------------
+    |
+    | These credentials are used to authenticate with the HCP Vagrant Registry
+    | API when fetching box download statistics.
+    |
+    */
+
+    'hcp_client_id' => env('HCP_CLIENT_ID'),
+    'hcp_client_secret' => env('HCP_CLIENT_SECRET'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Maintenance Mode Driver
     |--------------------------------------------------------------------------
     |

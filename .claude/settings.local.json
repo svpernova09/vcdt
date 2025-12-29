@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__laravel-boost__list-artisan-commands",
+      "mcp__laravel-boost__list-available-env-vars",
+      "Bash(lando php:*)",
+      "Bash(lando artisan:*)",
+      "WebSearch",
+      "WebFetch(domain:developer.hashicorp.com)",
+      "WebFetch(domain:portal.cloud.hashicorp.com)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "laravel-boost"
+  ]
+}
