@@ -7,7 +7,9 @@
       "Bash(lando artisan:*)",
       "WebSearch",
       "WebFetch(domain:developer.hashicorp.com)",
-      "WebFetch(domain:portal.cloud.hashicorp.com)"
+      "WebFetch(domain:portal.cloud.hashicorp.com)",
+      "Bash(lando rebuild:*)",
+      "Bash(lando composer:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

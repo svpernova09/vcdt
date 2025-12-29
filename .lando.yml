@@ -1,7 +1,7 @@
 name: vcdt
 recipe: laravel
 config:
-  php: '8.1'
+  php: '8.4'
   via: apache:2.4
   webroot: public
   database: mariadb:11.5
