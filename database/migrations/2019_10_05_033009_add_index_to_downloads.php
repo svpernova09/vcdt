@@ -13,9 +13,15 @@ class AddIndexToDownloads extends Migration
      */
     public function up()
     {
-        Schema::table('downloads', function (Blueprint $table) {
-            $table->index('downloads');
-            $table->index('created_at');
+        $indexes = collect(Schema::getIndexes('downloads'))->pluck('name');
+
+        Schema::table('downloads', function (Blueprint $table) use ($indexes) {
+            if (! $indexes->contains('downloads_downloads_index')) {
+                $table->index('downloads');
+            }
+            if (! $indexes->contains('downloads_created_at_index')) {
+                $table->index('created_at');
+            }
         });
     }
 }

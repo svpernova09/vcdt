@@ -13,6 +13,10 @@ class CreateBoxesTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('boxes')) {
+            return;
+        }
+
         Schema::create('boxes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('username');

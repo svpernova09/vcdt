@@ -13,6 +13,10 @@ class CreateDownloadsTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('downloads')) {
+            return;
+        }
+
         Schema::create('downloads', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('box_id');
