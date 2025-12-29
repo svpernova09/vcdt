@@ -15,26 +15,39 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $years =['2025', '2024', '2023','2022', '2021', '2020', '2019'];
+    $years = ['2025', '2024', '2023', '2022', '2021', '2020', '2019'];
 
     foreach ($years as $year) {
-        $downloads = Download::where('box_id', 1)->where('created_at', 'LIKE', $year . '%')->get();
-        if($downloads->count() > 0 ) {
-            $start = $downloads->first()->downloads;
-            $end = $downloads->last()->downloads;
-            //        var_dump($start, $end, $end - $start);
-            print("For year $year, the total downloads are " . number_format($end - $start) . "<br>");
+        $first = Download::where('box_id', 1)
+            ->whereYear('created_at', $year)
+            ->orderBy('created_at')
+            ->first();
+
+        $last = Download::where('box_id', 1)
+            ->whereYear('created_at', $year)
+            ->orderByDesc('created_at')
+            ->first();
+
+        if ($first && $last) {
+            echo "For year $year, the total downloads are ".number_format($last->downloads - $first->downloads).'<br>';
         }
     }
-    $years =['2025', '2024'];
+
+    $years = ['2025', '2024'];
 
     foreach ($years as $year) {
-        $downloads = Download::where('box_id', 5)->where('created_at', 'LIKE', $year . '%')->get();
-        if($downloads->count() > 0 ) {
-            $start = $downloads->first()->downloads;
-            $end = $downloads->last()->downloads;
-            //        var_dump($start, $end, $end - $start);
-            print("For year $year, the total downloads are " . number_format($end - $start) . "<br>");
+        $first = Download::where('box_id', 5)
+            ->whereYear('created_at', $year)
+            ->orderBy('created_at')
+            ->first();
+
+        $last = Download::where('box_id', 5)
+            ->whereYear('created_at', $year)
+            ->orderByDesc('created_at')
+            ->first();
+
+        if ($first && $last) {
+            echo "For year $year, the total downloads are ".number_format($last->downloads - $first->downloads).'<br>';
         }
     }
 });
