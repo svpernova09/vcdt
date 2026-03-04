@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $boxConfigs = [
-        ['id' => 1, 'years' => ['2025', '2024', '2023', '2022', '2021', '2020', '2019']],
-        ['id' => 5, 'years' => ['2025', '2024']],
+        ['id' => 1, 'years' => ['2026', '2025', '2024', '2023', '2022', '2021', '2020', '2019']],
+        ['id' => 5, 'years' => ['2026', '2025', '2024']],
     ];
 
     $boxes = [];
@@ -35,11 +35,13 @@ Route::get('/', function () {
         foreach ($config['years'] as $year) {
             $first = Download::where('box_id', $config['id'])
                 ->whereYear('created_at', $year)
+                ->where('downloads', '>', 0)
                 ->orderBy('created_at')
                 ->first();
 
             $last = Download::where('box_id', $config['id'])
                 ->whereYear('created_at', $year)
+                ->where('downloads', '>', 0)
                 ->orderByDesc('created_at')
                 ->first();
 
